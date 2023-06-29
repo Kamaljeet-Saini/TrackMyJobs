@@ -45,6 +45,8 @@ const UserSchema = new mongoose.Schema({
 //this middleware shall get triggered prior to saving a document while create or update
 UserSchema.pre("save", async function () {
   //"salt" is a random value that is added to the password before it is hashed
+  //console.log(this.modifiedPaths());
+  if (!this.isModified("password")) return;
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });

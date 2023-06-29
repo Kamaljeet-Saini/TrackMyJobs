@@ -16,6 +16,7 @@ import jobsRouter from "./routes/jobsRoutes.js";
 //middleware
 import notFoundMiddleWare from "./middleware/not-found.js";
 import errorHandlerMiddleware from "./middleware/error-handler.js";
+import authenticateUser from "./middleware/auth.js";
 
 import morgan from "morgan";
 
@@ -39,7 +40,7 @@ app.get("/api/v1", (req, res) => {
 });
 
 app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/jobs", jobsRouter);
+app.use("/api/v1/jobs", authenticateUser, jobsRouter);
 
 //Looks for the requests that don't match any of the above specified routes
 app.use(notFoundMiddleWare);

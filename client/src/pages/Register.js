@@ -67,7 +67,7 @@ function Register() {
   useEffect(() => {
     if (user) {
       const timer = setTimeout(() => {
-        navigate("/dashboard");
+        navigate("/");
       }, 3000);
 
       return () => clearTimeout(timer);
