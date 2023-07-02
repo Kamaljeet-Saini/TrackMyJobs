@@ -4,6 +4,7 @@ import Job from "./Job";
 import Loading from "./Loading";
 import Wrapper from "../assets/wrappers/JobsContainer";
 import PageBtnContainer from "./PageBtnContainer";
+import Alert from "./Alert";
 
 const JobsContainer = () => {
   const {
@@ -17,10 +18,13 @@ const JobsContainer = () => {
     page,
     totalJobs,
     numOfPages,
+    showAlert,
   } = useAppContext();
+
   useEffect(() => {
     getJobs();
-  }, [search, searchStatus, searchType, sort]);
+    // eslint-disable-next-line
+  }, [page, search, searchStatus, searchType, sort]);
 
   if (isLoading) {
     return <Loading center />;
@@ -36,6 +40,7 @@ const JobsContainer = () => {
 
   return (
     <Wrapper>
+      {showAlert && <Alert />}
       <h5>
         {totalJobs} job{jobs.length > 1 && "s"} found
       </h5>
@@ -43,10 +48,9 @@ const JobsContainer = () => {
         {jobs.map((job) => {
           return <Job key={job._id} {...job} />;
         })}
-
-        {/* pagination buttons */}
-        {numOfPages > 1 && <PageBtnContainer />}
       </div>
+      {/* pagination buttons */}
+      {numOfPages > 1 && <PageBtnContainer />}
     </Wrapper>
   );
 };

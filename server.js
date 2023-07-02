@@ -20,27 +20,50 @@ import authenticateUser from "./middleware/auth.js";
 
 import morgan from "morgan";
 
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import path from "path";
+
+import helmet from "helmet";
+import xss from "xss";
+import mongoSanitize from "express-mongo-sanitize";
+
+import cookieParser from "cookie-parser";
+
 if (process.env.NODE_ENV !== "production") {
   app.use(morgan("dev"));
 }
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+app.use(express.static(path.resolve(__dirname, "./client/build")));
+
 //will make json data available to us because we also have post requests
 app.use(express.json());
+app.use(cookieParser());
+//to secure headers
+app.use(helmet());
+//to make sure we sanitize the input and prevent cross-side scripting attacks
+//app.use(xss());
+//to prevent mongoDB operator injection
+app.use(mongoSanitize());
 
 console.log("Hello");
 
 app.get("/", (req, res) => {
-  //throw new Error("");
   res.send({ msg: "Welcome" });
 });
 
 app.get("/api/v1", (req, res) => {
-  //throw new Error("");
   res.send({ msg: "Welcome" });
 });
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/jobs", authenticateUser, jobsRouter);
+
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
+});
 
 //Looks for the requests that don't match any of the above specified routes
 app.use(notFoundMiddleWare);
