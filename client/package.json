@@ -18,7 +18,7 @@
     "recharts": "^2.7.2",
     "styled-components": "^5.3.11",
     "web-vitals": "^2.1.4",
-    "@babel/plugin-proposal-private-property-in-object": "^1.0.0"
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   },
   "scripts": {
     "start": "react-scripts start",

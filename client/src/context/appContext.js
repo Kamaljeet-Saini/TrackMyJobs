@@ -205,7 +205,7 @@ const AppProvider = ({ children }) => {
         `/api/v1/auth/${endpoint}`,
         currentUser
       );
-      const { user, location } = FormData;
+      const { user, location } = data;
       dispatch({
         type: SETUP_USER_SUCCESS,
         payload: {
